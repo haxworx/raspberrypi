@@ -1,0 +1,39 @@
+
+body {
+	background-color: white;
+	color: black;
+	width: 640px;
+	margin-top: 40px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@font-face {
+	font-family: "Jura";
+	src: url("/fonts/Jura-Regular.ttf");
+}
+
+select, h1, h2, h3, h4, p, input[type="submit"], input[type="text"], input[type="password"], td, tr {
+	font-family: Jura, "Verdana";
+	font-size: 11pt;
+}
+
+select, textarea, input  {
+	webkit-appearance: none;
+	 border: 1px solid #ababab;
+}
+
+input[type="submit"] {
+	 border: 1px solid #ababab;
+}
+	
+.box {
+	border: 1px solid #ababab;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 320px;
+}

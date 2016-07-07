@@ -1,0 +1,111 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
+
+<table width="100%">
+<tr><td>Welcome to your Raspberry Pri!</td><td align="right">
+<img width="50%" src="/images/pi.png">
+<form action="/index.cgi" method="post">
+<input type="hidden" name="action" value="exit">
+<input type="submit" value="Log out">
+</form>
+</td></tr>
+</table>
+<p style="color: darkred; font-weight: bold;">[% MESSAGE %]</p>
+<hr>
+<h1>Wireless Access Point Settings</h1>
+<p>Choose a network name and password:</p>
+<form action="/index.cgi" method="post">
+<input type="hidden" name="action" value="wifi">
+	<table> 
+	<tr><td width="100px">Network ID:</td><td><input name="nwid" type="text" value="[% NWID %]"></td></tr>
+	<tr><td width="100px">Passphrase:</td><td><input name="nwkey" type="text" value="[% NWKEY %]"></td></tr>
+	<tr><td></td><td><input type="submit" value="Make Changes and Reboot"></td></tr>
+	</table>
+</form>
+<hr>
+<h1>Internet Connection</h1>
+<div style="color: darkred; font-weigth: bold;">
+[% IF PROXY_STATE == 1 %]
+<p>Proxy Server is currently enabled.</p>
+[% ELSE %]
+<p>Proxy Server is currently disabled.</p>
+[% END %]
+</div>
+<p>To connect via proxy configure your operating system or browser to use a proxy server with the address: 10.1.1.1 and port 3128.</p>
+<table><tr><td>
+<form action="/index.cgi" method="post">
+	<input type="hidden" name="action" value="proxy">
+<select name="proxy_mode">
+	[% IF PROXY_STATE == 0 %]
+	<option value="1" selected>Enable Proxy</option>
+	<option value="0">Disable Proxy</option>
+	[% ELSE %]
+	<option value="0" selected>Disable Proxy</option>
+	<option value="1">Enable Proxy</option>
+	[% END %]
+</select>
+<input type="submit" value="Set">
+</form>
+<hr>
+<h1>Privacy Settings</h1>
+<div style="color: darkred; font-weigth: bold;">
+[% IF TOR_STATE == 1 %]
+<p>Tor is currently enabled.</p>
+[% ELSE %]
+<p>Tor is currently disabled.</p>
+[% END %]
+</div>
+<p>Secure and anonymize your presence online by enabling the Tor service with the proxy:</p>
+<form action="/index.cgi" method="post">
+	<input type="hidden" name="action" value="tor">
+<select name="tor_mode">
+	[% IF TOR_STATE == 0 %]
+	<option value="1" selected>Enable Tor</option>
+	<option value="0">Disable Tor</option>
+	[% ELSE %]
+	<option value="0" selected>Disable Tor</option>
+	<option value="1">Enable Tor</option>
+	[% END %]
+</select>
+<input type="submit" value="Set"[% IF PROXY_STATE == 0 %]disabled[% END %]>
+</form>
+</td></tr>
+</table>
+<hr>
+<h3>Change admin password</h3>
+<p>Change the password for the admin account on this WAP/gateway.</p>
+<form action="/index.cgi" method="post">
+	<input type="hidden" name="action" value="pwd">
+	<table>
+	<tr><td width="100px">New password</td><td><input name="password" type="password"></td></tr>
+	<tr><td></td><td><input type="submit" value="Change"></td></tr>
+	</table>
+</form>
+<hr>
+<table width="100%">
+<tr><td width="250px">
+<h4>Existing users:</h4>
+<form action="/index.cgi" method="post">
+<input type="hidden" name="action" value="del">
+	[% FOREACH SQL_DATA -%]
+<p><input type="checkbox" name="username" value="[% username %]">[% username %]</p>
+	[% END %]
+<input type="submit" value="Del User">
+</form>
+<hr>
+<h3>Add users on your network</h3>
+<form action="/index.cgi" method="post">
+<input type="hidden" name="action" value="add">
+<table>
+<tr>
+<td width="100px">Username </td><td><input type="text" name="username"></td></tr>
+<tr><td>Password </td><td><input type="password" name="password"></td></tr>
+<tr><td></td><td><input type="submit" value="Add User"></td></tr>
+</table>
+</form>
+<hr>
+</body>
+</html>
