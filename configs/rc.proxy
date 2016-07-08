@@ -1,0 +1,62 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+iptables -F 
+iptables -X
+
+
+iptables -A OUTPUT -p udp --destination-port 53 --destination 208.67.220.123 -j ACCEPT
+iptables -A OUTPUT -p tcp --destination-port 53 --destination 208.67.220.123 -j ACCEPT
+iptables -A INPUT -p udp --destination-port 53 --destination 10.1.1.1 -j ACCEPT
+iptables -A INPUT -p udp --destination-port 53 --destination 10.1.1.1 -j ACCEPT
+iptables -A INPUT -p tcp --destination-port 53 --destination 208.67.220.123 -j ACCEPT
+iptables -A INPUT -p tcp --destination-port 53 --destination 208.67.220.123 -j ACCEPT
+
+iptables -A OUTPUT -p tcp --destination-port 53 -d 192.168.0.0/24  -j DROP
+iptables -A OUTPUT -p udp --destination-port 53 -d 192.168.0.0/24  -j DROP
+iptables -A OUTPUT -p tcp --destination-port 53 -j DROP
+iptables -A OUTPUT -p udp --destination-port 53 -j DROP
+
+iptables -A INPUT -p udp --destination-port 53 -d 192.168.0.0/24 -j DROP
+iptables -A INPUT -p udp --destination-port 53 -d 192.168.0.0/24 -j DROP
+iptables -A INPUT -p tcp --destination-port 53 -j DROP
+iptables -A INPUT -p udp --destination-port 53 -j DROP
+
+iptables -A FORWARD -p tcp --destination-port 80 -d 163.1.221.67 -j ACCEPT
+iptables -A FORWARD -p tcp --destination-port 443 -d 163.1.221.67 -j ACCEPT
+iptables -A FORWARD -p tcp --destination-port 80   -j DROP
+iptables -A FORWARD -p udp --destination-port 80  -j DROP
+iptables -A FORWARD -p tcp --destination-port 443   -j DROP
+iptables -A FORWARD -p udp --destination-port 443  -j DROP
+
+# this is mirror.ox.ac.uk!
+#163.1.160.163
+iptables -A FORWARD -p tcp --destination-port 80 -d 163.1.160.163  -j ACCEPT
+iptables -A FORWARD -p tcp --destination-port 443 -d  163.1.160.163 -j ACCEPT
+
+# this is download.opensuse.org
+iptables -A FORWARD -p tcp --destination-port 80 -d 195.135.221.134 -j ACCEPT
+iptables -A FORWARD -p tcp --destination-port 443 -d 195.135.221.134 -j ACCEPT
+
+iptables -A FORWARD -p tcp --destination-port 53   -j DROP
+iptables -A FORWARD -p udp --destination-port 53  -j DROP
+iptables -A FORWARD -p tcp --destination-port 53 -d 10.1.1.1  -j ACCEPT
+iptables -A FORWARD -p udp --destination-port 53 -d 10.1.1.1 -j ACCEPT
+
+iptables -t nat -A POSTROUTING -s 10.1.1.1/8 ! -d 192.168.0.0/24  -j MASQUERADE
+
+exit 0
+cd /var/www/html/hive && \
+./start_hive 2>&1 > /dev/null &
+
+

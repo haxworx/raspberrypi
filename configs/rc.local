@@ -1,0 +1,31 @@
+#!/bin/sh -e
+#
+# rc.local
+
+PROXY_ENABLED=0;
+PROXY_FILE=/var/www/html/proxy;
+
+if [ -e $PROXY_FILE ]; then
+	PROXY_ENABLED=1;
+else
+	PROXY_ENABLED=0;
+fi;
+
+#	kill -KILL $(pgrep ^nodejs)
+
+if [ $PROXY_ENABLED -eq 1 ]; then
+ /etc/rc.proxy 2>&1 > /dev/null &
+else
+ /sbin/iptables -F;
+ /sbin/iptables -X;
+ /sbin/iptables -t nat -A POSTROUTING -s 10.1.1.1/8 ! -d 192.168.0.0/24  -j MASQUERADE
+fi
+
+exit 0;
+
+printf "Starting hive servivce...\n"
+cd /var/www/html/hive && \
+./start_hive 2>&1 > /dev/null &
+
+exit 0
+
