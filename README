@@ -1,4 +1,12 @@
 This is a quick knock up thing for doing WAP with a
 Raspberry Pi 3...I need to save this somewhere as want
 to do something else with the device...
+
+Requires:
+dnsmasq, hostapd, privoxy, squid, tor, mysql-server
  
+Install:
+
+make && make install 
+
+Then probably tweak....
