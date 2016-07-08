@@ -21,6 +21,9 @@ else
  /sbin/iptables -t nat -A POSTROUTING -s 10.1.1.1/8 ! -d 192.168.0.0/24  -j MASQUERADE
 fi
 
+# do nat
+sysctl net.ipv4.ip_forward=1
+
 exit 0;
 
 printf "Starting hive servivce...\n"
