@@ -9,8 +9,11 @@
 
 
 char *commands_available[] = {
-	"ls",
-	"pwd",
+	"cp",
+	"reboot",
+	"killall",
+	"/usr/sbin/squid",
+	"/etc/rc.local",
 	NULL,
 };
 
